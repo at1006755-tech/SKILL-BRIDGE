@@ -20,6 +20,13 @@ function Dashboard({ onLogout }) {
   // User Profile State
   const [profileName, setProfileName] = useState("Student");
   const [targetCareer, setTargetCareer] = useState("Software Developer");
+  const [college, setCollege] = useState("");
+  const [degree, setDegree] = useState("");
+  const [branch, setBranch] = useState("");
+  const [currentYear, setCurrentYear] = useState("");
+  const [careerGoal, setCareerGoal] = useState("");
+  const [experience, setExperience] = useState("");
+  const [programmingLanguages, setProgrammingLanguages] = useState([]);
   const [skills, setSkills] = useState([]);
   const [inProgressSkills, setInProgressSkills] = useState([]);
   const [resumeAnalysis, setResumeAnalysis] = useState(null);
@@ -62,6 +69,13 @@ function Dashboard({ onLogout }) {
           const data = userSnap.data();
           setProfileName(data.fullName || user.displayName || "Student");
           setTargetCareer(data.targetCareer || "Software Developer");
+          setCollege(data.college || "");
+          setDegree(data.degree || "");
+          setBranch(data.branch || "");
+          setCurrentYear(data.currentYear ? String(data.currentYear) : "");
+          setCareerGoal(data.careerGoal || "");
+          setExperience(data.experience || "");
+          setProgrammingLanguages(Array.isArray(data.programmingLanguages) ? data.programmingLanguages : []);
           setSkills(Array.isArray(data.skills) ? data.skills : []);
           setInProgressSkills(Array.isArray(data.inProgressSkills) ? data.inProgressSkills : []);
           setResumeAnalysis(data.resumeAnalysis || null);
@@ -406,6 +420,28 @@ function Dashboard({ onLogout }) {
               <h3>{jobsMatchedCount}</h3>
             </div>
           </div>
+        </section>
+
+        {/* Profile details loaded from the saved Firestore profile */}
+        <section className="dashboard-card profile-overview-card">
+          <div className="card-header">
+            <div>
+              <h3>👤 Your Profile Overview</h3>
+              <p>Your saved academic details and career preferences</p>
+            </div>
+            <button onClick={() => setCurrentView("profile")}>Edit Profile →</button>
+          </div>
+          <div className="profile-overview-grid">
+            <div><span>College</span><strong>{college || "Not added yet"}</strong></div>
+            <div><span>Education</span><strong>{[degree, branch].filter(Boolean).join(" • ") || "Not added yet"}</strong></div>
+            <div><span>Academic Year</span><strong>{currentYear ? (currentYear === "Graduated" ? "Recent Graduate" : `${currentYear}${currentYear === "1" ? "st" : currentYear === "2" ? "nd" : currentYear === "3" ? "rd" : "th"} Year`) : "Not added yet"}</strong></div>
+            <div><span>Career Goal</span><strong>{careerGoal || "Not added yet"}</strong></div>
+            <div><span>Experience Level</span><strong>{experience || "Not added yet"}</strong></div>
+            <div><span>Programming Languages</span><strong>{programmingLanguages.length ? programmingLanguages.join(", ") : "Not added yet"}</strong></div>
+          </div>
+          {!college && !degree && !programmingLanguages.length && (
+            <p className="profile-overview-hint">Complete your profile to see your academic and technical information here.</p>
+          )}
         </section>
 
         {/* Resume Analysis Quick Summary */}
