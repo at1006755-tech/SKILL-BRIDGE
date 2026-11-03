@@ -1,0 +1,588 @@
+/* =================================
+   SKILLBRIDGE AI - LOGIN PAGE
+================================= */
+
+.login-page {
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  background: #f8fafc;
+}
+
+/* =================================
+   LEFT SIDE
+================================= */
+
+.login-left {
+  min-height: 100vh;
+
+  padding: 55px 9%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: white;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(59, 130, 246, 0.35),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(124, 58, 237, 0.35),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #0f172a,
+      #172554,
+      #1e1b4b
+    );
+}
+
+/* Brand */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.brand > span span,
+.mobile-logo span {
+  color: #60a5fa;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+  );
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.3);
+
+  font-size: 19px;
+}
+
+/* Login Message */
+
+.login-message {
+  max-width: 560px;
+
+  margin: auto 0;
+}
+
+.ai-badge {
+  display: inline-flex;
+
+  padding: 8px 14px;
+
+  border-radius: 50px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  color: #bfdbfe;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  margin-bottom: 25px;
+}
+
+.login-message h1 {
+  font-size: clamp(45px, 5vw, 70px);
+
+  line-height: 1.05;
+
+  letter-spacing: -3px;
+
+  margin-bottom: 25px;
+}
+
+.login-message h1 span {
+  background: linear-gradient(
+    90deg,
+    #60a5fa,
+    #a78bfa
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.login-message > p {
+  color: #cbd5e1;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+
+  max-width: 520px;
+
+  margin-bottom: 35px;
+}
+
+/* Features */
+
+.login-features {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.login-features div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: #e2e8f0;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.login-features span {
+  width: 25px;
+  height: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(59, 130, 246, 0.18);
+
+  color: #60a5fa;
+
+  font-size: 12px;
+}
+
+/* =================================
+   RIGHT SIDE
+================================= */
+
+.login-right {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 50px 8%;
+
+  background: #f8fafc;
+}
+
+.login-card {
+  width: 100%;
+
+  max-width: 470px;
+
+  padding: 45px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.10);
+}
+
+/* Mobile Logo */
+
+.mobile-logo {
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+  margin-bottom: 30px;
+}
+
+.mobile-logo .brand-icon {
+  width: 34px;
+  height: 34px;
+}
+
+/* Heading */
+
+.form-heading {
+  margin-bottom: 30px;
+}
+
+.form-heading h2 {
+  font-size: 31px;
+
+  letter-spacing: -1px;
+
+  margin-bottom: 9px;
+
+  color: #0f172a;
+}
+
+.form-heading p {
+  color: #64748b;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+/* =================================
+   FORM
+================================= */
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+
+  color: #334155;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+
+  padding: 14px 15px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 11px;
+
+  background: #f8fafc;
+
+  color: #0f172a;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.25s;
+}
+
+.input-group input::placeholder {
+  color: #94a3b8;
+}
+
+.input-group input:focus {
+  background: white;
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+.password-label {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.password-label label {
+  margin-bottom: 8px;
+}
+
+.forgot-btn {
+  border: none;
+
+  background: transparent;
+
+  color: #2563eb;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  margin-bottom: 8px;
+}
+
+/* Submit */
+
+.login-submit {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #4f46e5
+  );
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.22);
+
+  transition: 0.3s;
+}
+
+.login-submit:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 15px 30px rgba(37, 99, 235, 0.3);
+}
+
+/* =================================
+   DIVIDER
+================================= */
+
+.divider {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 25px 0;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+
+  flex: 1;
+
+  height: 1px;
+
+  background: #e2e8f0;
+}
+
+/* =================================
+   GOOGLE
+================================= */
+
+.google-btn {
+  width: 100%;
+
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 11px;
+
+  background: white;
+
+  color: #334155;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition: 0.3s;
+}
+
+.google-btn:hover {
+  background: #f8fafc;
+
+  border-color: #94a3b8;
+}
+
+.google-icon {
+  font-size: 17px;
+
+  font-weight: 800;
+
+  color: #4285f4;
+}
+
+/* =================================
+   SWITCH
+================================= */
+
+.switch-text {
+  text-align: center;
+
+  margin-top: 25px;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.switch-text button {
+  border: none;
+
+  background: transparent;
+
+  color: #2563eb;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* =================================
+   TERMS
+================================= */
+
+.terms {
+  text-align: center;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  line-height: 1.6;
+
+  margin-top: 22px;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 900px) {
+
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .login-left {
+    display: none;
+  }
+
+  .login-right {
+    padding: 30px 20px;
+  }
+
+  .mobile-logo {
+    display: flex;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .login-card {
+    padding: 30px 22px;
+
+    border-radius: 18px;
+  }
+
+  .form-heading h2 {
+    font-size: 27px;
+  }
+
+}
+
+/* =================================
+   AUTH ALERT & BACK LINK
+================================= */
+.auth-alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-alert.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+
+.auth-alert.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+.back-home-link {
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #bfdbfe;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.back-home-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
