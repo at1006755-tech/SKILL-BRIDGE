@@ -105,6 +105,7 @@ function ResumeAnalyzer({ onBack }) {
                 detected_skills: data.detected_skills || [],
                 missing_skills: data.missing_skills || [],
                 recommendations: data.recommendations || [],
+                structured_recommendations: data.structured_recommendations || [],
                 score_breakdown: data.score_breakdown || null,
                 analyzedAt: serverTimestamp(),
               },
@@ -444,14 +445,34 @@ function ResumeAnalyzer({ onBack }) {
               <p style={{ color: "#64748b", fontSize: "13px", marginBottom: "16px" }}>
                 Actionable next steps prioritized to increase your placement readiness:
               </p>
-              <div className="recs-list">
-                {(result.recommendations || []).map((rec, index) => (
-                  <div key={index} className="rec-item">
-                    <span className="rec-bullet">✦</span>
-                    <p>{rec}</p>
-                  </div>
-                ))}
-              </div>
+              {result.structured_recommendations?.length > 0 ? (
+                <div className="structured-recs-grid">
+                  {result.structured_recommendations.map((rec, index) => (
+                    <article className="structured-rec-card" key={`${rec.topic}-${index}`}>
+                      <div className="structured-rec-top">
+                        <strong>{rec.topic}</strong>
+                        <span className={`priority-pill priority-${(rec.priority || "medium").toLowerCase()}`}>
+                          {rec.priority || "Suggested"}
+                        </span>
+                      </div>
+                      <p className="structured-rec-reason">{rec.reason}</p>
+                      <div className="structured-rec-action">
+                        <strong>What to do next</strong>
+                        <p>{rec.action}</p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="recs-list">
+                  {(result.recommendations || []).map((rec, index) => (
+                    <div key={index} className="rec-item">
+                      <span className="rec-bullet">✦</span>
+                      <p>{rec}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Extracted Text */}
