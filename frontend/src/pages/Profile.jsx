@@ -232,11 +232,10 @@ function Profile({ onBack }) {
         { merge: true }
       );
 
-      setFeedback({ text: "Profile updated successfully in Firestore! 🎉", type: "success" });
-      setTimeout(() => setFeedback({ text: "", type: "" }), 4000);
+      setFeedback({ text: "Profile saved successfully! Your changes are up to date. 🎉", type: "success" });
     } catch (error) {
       console.error("Profile save error:", error);
-      setFeedback({ text: "Failed to save profile. Please check your connection.", type: "error" });
+      setFeedback({ text: "Unable to save your profile. Please check your internet connection and try again.", type: "error" });
     } finally {
       setSaving(false);
     }
@@ -279,18 +278,14 @@ function Profile({ onBack }) {
         {/* Feedback Alert */}
         {feedback.text && (
           <div
-            style={{
-              padding: "14px 20px",
-              borderRadius: "12px",
-              marginBottom: "24px",
-              fontSize: "14px",
-              fontWeight: "600",
-              background: feedback.type === "success" ? "#ecfdf5" : "#fef2f2",
-              color: feedback.type === "success" ? "#065f46" : "#991b1b",
-              border: `1px solid ${feedback.type === "success" ? "#a7f3d0" : "#fecaca"}`,
-            }}
+            className={`profile-feedback ${feedback.type}`}
+            role={feedback.type === "error" ? "alert" : "status"}
+            aria-live="polite"
           >
-            {feedback.type === "success" ? "✓ " : "⚠️ "} {feedback.text}
+            <span className="profile-feedback-icon" aria-hidden="true">
+              {feedback.type === "success" ? "✓" : "⚠"}
+            </span>
+            <span>{feedback.text}</span>
           </div>
         )}
 
