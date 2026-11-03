@@ -5,6 +5,10 @@ import "./ProgressTracking.css";
 
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+function activeDaysCountSafe(days) {
+  return Array.isArray(days) ? days.filter(Boolean).length : 0;
+}
+
 function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavigateSkillGap }) {
   const [loading, setLoading] = useState(true);
   const [profileName, setProfileName] = useState("Student");
