@@ -4,6 +4,42 @@ import { onAuthStateChanged } from "firebase/auth";
 import "./Profile.css";
 import { auth, db } from "../firebase";
 
+const COLLEGE_OPTIONS = [
+  "PSIT College of Higher Education, Kanpur",
+  "Pranveer Singh Institute of Technology (PSIT), Kanpur",
+  "IIT Kanpur",
+  "IIT Delhi",
+  "IIT Bombay",
+  "IIT Madras",
+  "IIT Roorkee",
+  "IIT BHU Varanasi",
+  "MNNIT Allahabad",
+  "NIT Trichy",
+  "NIT Warangal",
+  "Delhi Technological University (DTU)",
+  "Netaji Subhas University of Technology (NSUT)",
+  "AKGEC, Ghaziabad",
+  "KIET Group of Institutions, Ghaziabad",
+  "GLA University, Mathura",
+  "Amity University",
+  "Chandigarh University",
+  "Lovely Professional University (LPU)",
+  "VIT Vellore",
+  "SRM Institute of Science and Technology",
+  "JSS Academy of Technical Education, Noida",
+  "Galgotias University",
+  "Bennett University",
+  "University of Lucknow",
+  "Dr. A.P.J. Abdul Kalam Technical University (AKTU)",
+  "Christ University",
+  "Symbiosis International University",
+  "Banaras Hindu University (BHU)",
+  "University of Delhi",
+  "Other"
+];
+const LANGUAGE_OPTIONS = ["C","C++","C#","Java","Python","JavaScript","TypeScript","PHP","Ruby","Go","Rust","Kotlin","Swift","Dart","R","SQL","HTML","CSS","Bash","MATLAB"];
+const SKILL_OPTIONS = ["HTML","CSS","JavaScript","TypeScript","React","Next.js","Node.js","Express.js","Python","Java","C","C++","SQL","MySQL","PostgreSQL","MongoDB","Firebase","Git","GitHub","REST API","DSA","Data Structures","Algorithms","OOP","Machine Learning","Artificial Intelligence","Data Analysis","Pandas","NumPy","Figma","Tailwind CSS","Bootstrap","Docker","AWS","Linux"];
+
 function Profile({ onBack }) {
   const [user, setUser] = useState(auth.currentUser);
 
@@ -26,6 +62,8 @@ function Profile({ onBack }) {
 
   const [langInput, setLangInput] = useState("");
   const [programmingLanguages, setProgrammingLanguages] = useState([]);
+  const [languageSearch, setLanguageSearch] = useState("");
+  const [skillSearch, setSkillSearch] = useState("");
 
   const [github, setGithub] = useState("");
   const [linkedin, setLinkedin] = useState("");
@@ -112,6 +150,10 @@ function Profile({ onBack }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleSelection = (items, setItems, value) => {
+    setItems(items.includes(value) ? items.filter((item) => item !== value) : [...items, value]);
   };
 
   // Add Technical Skill
@@ -343,10 +385,15 @@ function Profile({ onBack }) {
               <label>College / University *</label>
               <input
                 type="text"
-                placeholder="e.g. Delhi Technological University"
+                list="college-options"
+                placeholder="Search or type your college name"
                 value={college}
                 onChange={(e) => setCollege(e.target.value)}
               />
+              <datalist id="college-options">
+                {COLLEGE_OPTIONS.map((name) => <option key={name} value={name} />)}
+              </datalist>
+              <small className="field-hint">Search the list or type your college's full name if it is not listed.</small>
             </div>
 
             <div className="form-group">
@@ -464,48 +511,20 @@ function Profile({ onBack }) {
             <p>Languages you know or are currently practicing.</p>
           </div>
 
-          <div className="skills-input">
-            <input
-              type="text"
-              placeholder="e.g. Python, Java, C++, JavaScript..."
-              value={langInput}
-              onChange={(e) => setLangInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleAddLanguage();
-                }
-              }}
-            />
-            <button type="button" onClick={handleAddLanguage}>
-              + Add Language
-            </button>
-          </div>
-
-          <div className="skill-tags">
-            {programmingLanguages.map((lang) => (
-              <span key={lang}>
-                {lang}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveLanguage(lang)}
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    marginLeft: "6px",
-                    color: "#dc2626",
-                    fontWeight: "bold",
-                  }}
-                >
-                  ×
-                </button>
-              </span>
+          <input className="option-search" type="search" placeholder="Search programming languages..." value={languageSearch} onChange={(e) => setLanguageSearch(e.target.value)} />
+          <div className="checkbox-options">
+            {LANGUAGE_OPTIONS.filter((item) => item.toLowerCase().includes(languageSearch.toLowerCase())).map((lang) => (
+              <label className="checkbox-option" key={lang}>
+                <input type="checkbox" checked={programmingLanguages.includes(lang)} onChange={() => toggleSelection(programmingLanguages, setProgrammingLanguages, lang)} />
+                <span>{lang}</span>
+              </label>
             ))}
-            {programmingLanguages.length === 0 && (
-              <small style={{ color: "#94a3b8" }}>No programming languages added yet.</small>
-            )}
           </div>
+          <div className="skills-input custom-option-input">
+            <input type="text" placeholder="Add another language..." value={langInput} onChange={(e) => setLangInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddLanguage(); } }} />
+            <button type="button" onClick={handleAddLanguage}>+ Add Custom</button>
+          </div>
+          <p className="selection-count">{programmingLanguages.length} language(s) selected</p>
         </section>
 
         {/* Technical Skills */}
@@ -515,48 +534,20 @@ function Profile({ onBack }) {
             <p>Frameworks, databases, platforms, and methodologies you know.</p>
           </div>
 
-          <div className="skills-input">
-            <input
-              type="text"
-              placeholder="e.g. React, Node.js, SQL, MongoDB, Git, DSA..."
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleAddSkill();
-                }
-              }}
-            />
-            <button type="button" onClick={handleAddSkill}>
-              + Add Skill
-            </button>
-          </div>
-
-          <div className="skill-tags">
-            {skills.map((skill) => (
-              <span key={skill}>
-                {skill}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveSkill(skill)}
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    cursor: "pointer",
-                    marginLeft: "6px",
-                    color: "#dc2626",
-                    fontWeight: "bold",
-                  }}
-                >
-                  ×
-                </button>
-              </span>
+          <input className="option-search" type="search" placeholder="Search technical skills..." value={skillSearch} onChange={(e) => setSkillSearch(e.target.value)} />
+          <div className="checkbox-options">
+            {SKILL_OPTIONS.filter((item) => item.toLowerCase().includes(skillSearch.toLowerCase())).map((skill) => (
+              <label className="checkbox-option" key={skill}>
+                <input type="checkbox" checked={skills.includes(skill)} onChange={() => toggleSelection(skills, setSkills, skill)} />
+                <span>{skill}</span>
+              </label>
             ))}
-            {skills.length === 0 && (
-              <small style={{ color: "#94a3b8" }}>No technical skills added yet. Add some above or upload your resume!</small>
-            )}
           </div>
+          <div className="skills-input custom-option-input">
+            <input type="text" placeholder="Add another technical skill..." value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddSkill(); } }} />
+            <button type="button" onClick={handleAddSkill}>+ Add Custom</button>
+          </div>
+          <p className="selection-count">{skills.length} skill(s) selected</p>
         </section>
 
         {/* Professional Profiles */}
