@@ -161,6 +161,64 @@ function Dashboard({ onLogout }) {
   // Active Skill Gaps count
   const skillGapsCount = resumeAnalysis?.missing_skills?.length ?? 4;
 
+  // Transparent recommendation engine based on the student's saved profile.
+  const normalizeRecommendationSkill = (value = "") =>
+    String(value).toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+  const completedSkillSet = new Set(
+    [...skills, ...programmingLanguages].map(normalizeRecommendationSkill)
+  );
+  const learningSkillSet = new Set(inProgressSkills.map(normalizeRecommendationSkill));
+  const resumeGap = (resumeAnalysis?.missing_skills || []).find(
+    (skill) =>
+      !completedSkillSet.has(normalizeRecommendationSkill(skill)) &&
+      !learningSkillSet.has(normalizeRecommendationSkill(skill))
+  );
+  const activeLearningSkill = inProgressSkills.find(
+    (skill) => !completedSkillSet.has(normalizeRecommendationSkill(skill))
+  );
+
+  const careerNextSteps = {
+    "Software Developer": { title: "Data Structures & Algorithms", detail: "Start with arrays, strings, and basic problem-solving practice." },
+    "Web Developer": { title: "JavaScript & DOM Practice", detail: "Build interactive pages using events, DOM manipulation, and form validation." },
+    "Backend Developer": { title: "REST APIs & Backend Basics", detail: "Practice HTTP methods, API routes, request validation, and database CRUD." },
+    "Data Analyst": { title: "SQL for Data Analysis", detail: "Practice SELECT, filtering, JOINs, GROUP BY, and aggregate functions." },
+    "Data Scientist": { title: "Python for Data Analysis", detail: "Learn NumPy and Pandas, then explore a small dataset." },
+    "AI ML Engineer": { title: "Python & Machine Learning Foundations", detail: "Review Python, statistics, and a beginner-friendly Scikit-learn workflow." },
+    "Cybersecurity": { title: "Networking Fundamentals", detail: "Learn TCP/IP, DNS, HTTP/HTTPS, and basic Linux commands." },
+  };
+
+  const recommendation = !college && !degree && !skills.length && !programmingLanguages.length
+    ? {
+        title: "Complete Your Student Profile",
+        detail: "Add your technical skills and target career so recommendations can match your goals.",
+        reason: "Your profile does not have enough learning information yet.",
+        action: "Complete Profile",
+        view: "profile",
+      }
+    : resumeGap
+    ? {
+        title: `Learn ${resumeGap}`,
+        detail: `Focus on ${resumeGap} to address a skill gap identified in your resume analysis.`,
+        reason: "This skill appears in your resume analysis and is not marked completed or in progress.",
+        action: "View Skill Gaps",
+        view: "skillgap",
+      }
+    : activeLearningSkill
+    ? {
+        title: `Continue ${activeLearningSkill}`,
+        detail: `Keep learning ${activeLearningSkill} and mark it completed in Skill Gap Analysis when you can use it confidently.`,
+        reason: "You already marked this skill as in progress, so finishing it is the most direct next step.",
+        action: "Update Skill Progress",
+        view: "skillgap",
+      }
+    : {
+        title: careerNextSteps[targetCareer]?.title || "Follow Your Career Roadmap",
+        detail: careerNextSteps[targetCareer]?.detail || "Continue with the next incomplete task in your selected career roadmap.",
+        reason: "Your currently saved skills do not show an unfinished priority skill, so this is a suggested next area for your career goal.",
+        action: "Open Career Roadmap",
+        view: "roadmap",
+      };
+
   return (
     <div className="dashboard">
       {/* Sidebar Navigation */}
@@ -580,25 +638,36 @@ function Dashboard({ onLogout }) {
             </div>
           </div>
 
-          {/* AI Recommendation Card */}
+          {/* Smart Learning Recommendation Card */}
           <div className="dashboard-card ai-card">
             <div className="ai-icon">🤖</div>
-            <p className="section-label">AI RECOMMENDATION</p>
-            <h3>Next Placement Step</h3>
+            <p className="section-label">SMART LEARNING RECOMMENDATION</p>
+            <h3>{recommendation.title}</h3>
 
             <p style={{ minHeight: "60px" }}>
-              {resumeAnalysis?.recommendations?.length > 0
-                ? resumeAnalysis.recommendations[0]
-                : resumeAnalysis?.missing_skills?.length > 0
-                ? `Prioritize learning ${resumeAnalysis.missing_skills[0]} to strengthen your technical profile for ${targetCareer}.`
-                : "Analyze your resume to unlock tailored AI learning recommendations and career roadmaps."}
+              {recommendation.detail}
             </p>
+
+            <div style={{
+              margin: "12px 0 18px",
+              padding: "12px",
+              borderRadius: "10px",
+              background: "#f8fafc",
+              borderLeft: "3px solid #6366f1",
+            }}>
+              <strong style={{ display: "block", fontSize: "12px", color: "#334155", marginBottom: "4px" }}>
+                Why this recommendation?
+              </strong>
+              <span style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.5 }}>
+                {recommendation.reason}
+              </span>
+            </div>
 
             <button
               className="start-button"
-              onClick={() => setCurrentView("roadmap")}
+              onClick={() => setCurrentView(recommendation.view)}
             >
-              Start Learning in Roadmap →
+              {recommendation.action} →
             </button>
           </div>
         </section>
