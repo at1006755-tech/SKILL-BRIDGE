@@ -491,3 +491,13 @@
   }
 
 }
+
+/* Saved profile overview on dashboard */
+.profile-overview-card { margin-bottom: 24px; }
+.profile-overview-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.profile-overview-grid > div { min-width: 0; padding: 14px 16px; background: #f8fafc; border: 1px solid #edf0f5; border-radius: 11px; }
+.profile-overview-grid span { display: block; margin-bottom: 7px; color: #7a8295; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .35px; }
+.profile-overview-grid strong { display: block; color: #172033; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.profile-overview-hint { margin: 14px 0 0; color: #64748b; font-size: 12px; }
+@media (max-width: 900px) { .profile-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .profile-overview-grid { grid-template-columns: 1fr; } }
