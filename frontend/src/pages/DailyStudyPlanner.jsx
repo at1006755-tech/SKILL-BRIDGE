@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import "./DailyStudyPlanner.css";
 
@@ -130,10 +130,10 @@ function DailyStudyPlanner({ targetCareer = "Software Developer", onBack }) {
       );
 
       retainedPlans[todayKey] = { targetCareer, completedTaskIds: nextIds };
-      await setDoc(userRef, {
+      await updateDoc(userRef, {
         dailyStudyPlans: retainedPlans,
         updatedAt: serverTimestamp(),
-      }, { merge: true });
+      });
       setMessage("Progress saved to your account.");
     } catch (error) {
       console.error("Daily study plan save error:", error);
