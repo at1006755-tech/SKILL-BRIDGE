@@ -5,8 +5,47 @@ import "./ProgressTracking.css";
 
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-function activeDaysCountSafe(days) {
-  return Array.isArray(days) ? days.filter(Boolean).length : 0;
+function formatLocalDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getCurrentWeekDateKeys(referenceDate = new Date()) {
+  const monday = new Date(referenceDate);
+  monday.setHours(0, 0, 0, 0);
+  const day = monday.getDay();
+  monday.setDate(monday.getDate() + (day === 0 ? -6 : 1 - day));
+
+  return DAYS_OF_WEEK.map((_, index) => {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + index);
+    return formatLocalDate(date);
+  });
+}
+
+function countCurrentStreak(log, today = new Date()) {
+  const todayKey = formatLocalDate(today);
+  const cursor = new Date(today);
+  cursor.setHours(0, 0, 0, 0);
+
+  if (!log[todayKey]) cursor.setDate(cursor.getDate() - 1);
+
+  let count = 0;
+  while (log[formatLocalDate(cursor)]) {
+    count += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return count;
+}
+
+function formatWeekRange(dateKeys) {
+  if (!dateKeys.length) return "";
+  const options = { month: "short", day: "numeric" };
+  const start = new Date(`${dateKeys[0]}T12:00:00`);
+  const end = new Date(`${dateKeys[6]}T12:00:00`);
+  return `${start.toLocaleDateString("en-IN", options)} – ${end.toLocaleDateString("en-IN", options)}`;
 }
 
 function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavigateSkillGap }) {
@@ -18,8 +57,9 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
   const [resumeAnalysis, setResumeAnalysis] = useState(null);
   const [roadmapCompletedTasks, setRoadmapCompletedTasks] = useState([]);
   const [savedRoadmapProgress, setSavedRoadmapProgress] = useState(null);
-  const [studyStreak, setStudyStreak] = useState([true, true, true, false, false, false, false]); // Mon-Sun
+  const [studyLog, setStudyLog] = useState({});
   const [savingStreak, setSavingStreak] = useState(false);
+  const [streakMessage, setStreakMessage] = useState("");
 
   // Load User Data from Firestore
   useEffect(() => {
@@ -53,8 +93,16 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
           const careerProgress = progressByCareer[data.targetCareer || "Software Developer"];
           setSavedRoadmapProgress(typeof careerProgress === "number" ? careerProgress : null);
 
-          if (Array.isArray(data.weeklyStudyDays)) {
-            setStudyStreak(data.weeklyStudyDays);
+          if (data.weeklyStudyLog && typeof data.weeklyStudyLog === "object" && !Array.isArray(data.weeklyStudyLog)) {
+            setStudyLog(data.weeklyStudyLog);
+          } else if (Array.isArray(data.weeklyStudyDays)) {
+            // Migrate the earlier Mon-Sun tracker format into dated entries for this week.
+            const weekKeys = getCurrentWeekDateKeys();
+            const migratedLog = {};
+            weekKeys.forEach((dateKey, index) => {
+              if (data.weeklyStudyDays[index]) migratedLog[dateKey] = true;
+            });
+            setStudyLog(migratedLog);
           }
         }
       } catch (err) {
@@ -91,35 +139,58 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
   const skillBreakdownPercent = (count) => skillBreakdownTotal
     ? Math.round((count / skillBreakdownTotal) * 100)
     : 0;
-  const weeklyActivityPercent = Math.round((activeDaysCountSafe(studyStreak) / 7) * 100);
+  const currentWeekKeys = getCurrentWeekDateKeys();
+  const currentWeekDays = currentWeekKeys.map((dateKey) => Boolean(studyLog[dateKey]));
+  const activeDaysCount = currentWeekDays.filter(Boolean).length;
+  const weeklyActivityPercent = Math.round((activeDaysCount / 7) * 100);
+  const currentStreak = countCurrentStreak(studyLog);
+  const weekRangeLabel = formatWeekRange(currentWeekKeys);
 
-  // Toggle study day
+  // Save each study activity against its actual calendar date.
   const handleToggleDay = async (index) => {
-    const updated = [...studyStreak];
-    updated[index] = !updated[index];
-    setStudyStreak(updated);
-
     const user = auth.currentUser;
-    if (user) {
-      try {
-        setSavingStreak(true);
-        await setDoc(
-          doc(db, "users", user.uid),
-          {
-            weeklyStudyDays: updated,
-            updatedAt: serverTimestamp(),
-          },
-          { merge: true }
-        );
-      } catch (err) {
-        console.error("Streak save error:", err);
-      } finally {
-        setSavingStreak(false);
-      }
+    if (!user || savingStreak) return;
+
+    const dateKey = currentWeekKeys[index];
+    const updatedLog = { ...studyLog };
+    if (updatedLog[dateKey]) {
+      delete updatedLog[dateKey];
+    } else {
+      updatedLog[dateKey] = true;
+    }
+
+    // Keep the last 90 days so the Firestore document does not grow indefinitely.
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 90);
+    const cutoffKey = formatLocalDate(cutoff);
+    const trimmedLog = Object.fromEntries(
+      Object.entries(updatedLog).filter(([key]) => key >= cutoffKey)
+    );
+
+    setStudyLog(trimmedLog);
+    setSavingStreak(true);
+    setStreakMessage("");
+
+    try {
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          weeklyStudyLog: trimmedLog,
+          // Retain the old field for compatibility with earlier app versions.
+          weeklyStudyDays: currentWeekKeys.map((key) => Boolean(trimmedLog[key])),
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+      setStreakMessage("Study activity saved successfully.");
+    } catch (err) {
+      console.error("Streak save error:", err);
+      setStudyLog(studyLog);
+      setStreakMessage("Could not save activity. Please check your connection and try again.");
+    } finally {
+      setSavingStreak(false);
     }
   };
-
-  const activeDaysCount = studyStreak.filter(Boolean).length;
 
   return (
     <div className="progress-page">
@@ -362,30 +433,38 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
           {/* Column 2: Weekly Cadence Tracker & Milestones */}
           <div className="analytics-card">
             <h3>Weekly Learning Cadence</h3>
-            <p>Click any day to log your preparation activity streak ({activeDaysCount}/7 active days):</p>
+            <p>Log the days you studied this week. Your activity is saved by calendar date ({weekRangeLabel}).</p>
 
-            {/* 7 Days of the Week */}
+            {/* Weekly goal and current consecutive-day streak */}
             <div className="weekly-activity-summary">
-              <div><strong>{activeDaysCount}/7</strong><span>study days logged</span></div>
+              <div><strong>{activeDaysCount}/7</strong><span>study days logged this week</span></div>
               <div className="weekly-activity-track"><div style={{ width: `${weeklyActivityPercent}%` }} /></div>
               <small>{weeklyActivityPercent}% of your weekly goal</small>
+              <div className="study-streak-note">🔥 Current study streak: <strong>{currentStreak} {currentStreak === 1 ? "day" : "days"}</strong></div>
             </div>
             <div className="weekly-days-grid">
               {DAYS_OF_WEEK.map((day, idx) => (
-                <div
-                  key={day}
-                  className={`day-box ${studyStreak[idx] ? "active" : ""}`}
+                <button
+                  type="button"
+                  key={currentWeekKeys[idx]}
+                  className={`day-box ${currentWeekDays[idx] ? "active" : ""}`}
                   onClick={() => handleToggleDay(idx)}
-                  title="Click to toggle study activity"
+                  disabled={savingStreak || loading || !auth.currentUser}
+                  aria-pressed={currentWeekDays[idx]}
+                  title={`Toggle study activity for ${day}, ${currentWeekKeys[idx]}`}
                 >
                   <small>{day}</small>
-                  <strong>{studyStreak[idx] ? "✓" : "—"}</strong>
-                </div>
+                  <strong>{currentWeekDays[idx] ? "✓" : "—"}</strong>
+                  <span>{new Date(`${currentWeekKeys[idx]}T12:00:00`).getDate()}</span>
+                </button>
               ))}
             </div>
             {savingStreak && (
-              <small style={{ color: "#4f46e5", display: "block", marginTop: "8px" }}>
-                Updating streak...
+              <small className="study-save-message" role="status">Saving study activity...</small>
+            )}
+            {!savingStreak && streakMessage && (
+              <small className={`study-save-message ${streakMessage.startsWith("Could not") ? "error" : "success"}`} role="status">
+                {streakMessage}
               </small>
             )}
 
