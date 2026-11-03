@@ -10,6 +10,7 @@ import CareerRoadmap from "./CareerRoadmap";
 import SkillGap from "./SkillGap";
 import JobMatching from "./JobMatching";
 import ProgressTracking from "./ProgressTracking";
+import DailyStudyPlanner from "./DailyStudyPlanner";
 import Settings from "./Settings";
 
 function Dashboard({ onLogout }) {
@@ -146,6 +147,14 @@ function Dashboard({ onLogout }) {
         onNavigateRoadmap={() => setCurrentView("roadmap")}
         onNavigateResume={() => setCurrentView("resume")}
         onNavigateSkillGap={() => setCurrentView("skillgap")}
+      />
+    );
+  }
+  if (currentView === "planner") {
+    return (
+      <DailyStudyPlanner
+        targetCareer={targetCareer}
+        onBack={() => setCurrentView("dashboard")}
       />
     );
   }
@@ -293,6 +302,13 @@ function Dashboard({ onLogout }) {
             onClick={() => setCurrentView("progress")}
           >
             📊 <span>Progress Tracking</span>
+          </button>
+
+          <button
+            className={`menu-item ${currentView === "planner" ? "active" : ""}`}
+            onClick={() => setCurrentView("planner")}
+          >
+            🗓️ <span>Daily Study Planner</span>
           </button>
 
           <button
