@@ -392,3 +392,62 @@
     padding: 24px 16px;
   }
 }
+
+/* Structured, prioritized resume improvement recommendations */
+.structured-recs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.structured-rec-card {
+  padding: 17px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+}
+.structured-rec-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.structured-rec-top > strong {
+  color: #1e293b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.priority-pill {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+}
+.priority-high { color: #b91c1c; background: #fee2e2; }
+.priority-medium { color: #92400e; background: #fef3c7; }
+.priority-low { color: #166534; background: #dcfce7; }
+.structured-rec-reason {
+  margin: 10px 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.structured-rec-action {
+  padding: 11px 12px;
+  background: #f8fafc;
+  border-radius: 9px;
+}
+.structured-rec-action strong {
+  color: #4f46e5;
+  font-size: 11px;
+}
+.structured-rec-action p {
+  margin: 5px 0 0;
+  color: #334155;
+  font-size: 12px;
+  line-height: 1.6;
+}
+@media (max-width: 700px) {
+  .structured-recs-grid { grid-template-columns: 1fr; }
+  .structured-rec-top { flex-wrap: wrap; }
+}
