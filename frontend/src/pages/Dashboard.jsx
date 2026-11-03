@@ -219,6 +219,20 @@ function Dashboard({ onLogout }) {
         view: "roadmap",
       };
 
+  // Curated free learning resources for common recommended topics.
+  const recommendationResourceMap = {
+    sql: { name: "SQLZoo Interactive SQL Tutorials", url: "https://sqlzoo.net/", duration: "1–2 weeks" },
+    javascript: { name: "MDN JavaScript Guide", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide", duration: "2–3 weeks" },
+    databasemanagement: { name: "SQLZoo Interactive SQL Tutorials", url: "https://sqlzoo.net/", duration: "1–2 weeks" },
+    datastructuresalgorithms: { name: "GeeksforGeeks DSA Tutorial", url: "https://www.geeksforgeeks.org/data-structures/", duration: "4–6 weeks" },
+    dsa: { name: "GeeksforGeeks DSA Tutorial", url: "https://www.geeksforgeeks.org/data-structures/", duration: "4–6 weeks" },
+    python: { name: "Python Official Tutorial", url: "https://docs.python.org/3/tutorial/", duration: "2–3 weeks" },
+    restapisbackendbasics: { name: "MDN: HTTP Overview", url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview", duration: "1–2 weeks" },
+    networkingfundamentals: { name: "Cisco Networking Basics", url: "https://skillsforall.com/course/networking-basics", duration: "2–3 weeks" },
+  };
+  const recommendedTopic = resumeGap || activeLearningSkill || recommendation.title;
+  const recommendationResource = recommendationResourceMap[normalizeRecommendationSkill(recommendedTopic)];
+
   return (
     <div className="dashboard">
       {/* Sidebar Navigation */}
@@ -647,6 +661,31 @@ function Dashboard({ onLogout }) {
             <p style={{ minHeight: "60px" }}>
               {recommendation.detail}
             </p>
+
+            {recommendationResource && (
+              <div style={{
+                margin: "10px 0 14px",
+                padding: "12px",
+                borderRadius: "10px",
+                background: "#f0fdf4",
+                border: "1px solid #dcfce7",
+              }}>
+                <strong style={{ display: "block", fontSize: "12px", color: "#166534", marginBottom: "5px" }}>
+                  📚 Free Learning Resource
+                </strong>
+                <a
+                  href={recommendationResource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#2563eb", fontSize: "13px", fontWeight: "700", textDecoration: "none" }}
+                >
+                  {recommendationResource.name} ↗
+                </a>
+                <p style={{ margin: "6px 0 0", color: "#64748b", fontSize: "11px" }}>
+                  Estimated learning time: {recommendationResource.duration} (approx. 1 hour/day)
+                </p>
+              </div>
+            )}
 
             <div style={{
               margin: "12px 0 18px",
