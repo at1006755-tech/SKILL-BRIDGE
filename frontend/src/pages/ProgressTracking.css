@@ -374,3 +374,53 @@
   background: linear-gradient(90deg, #6366f1, #8b5cf6);
   transition: width 0.4s ease;
 }
+
+
+/* Date-based weekly study tracker */
+.day-box {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+
+.day-box:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.day-box:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.35);
+  outline-offset: 2px;
+}
+
+.day-box span {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.study-streak-note {
+  margin-top: 10px;
+  color: #475569;
+  font-size: 12px;
+}
+
+.study-streak-note strong {
+  color: #4f46e5;
+}
+
+.study-save-message {
+  display: block;
+  margin-top: 9px;
+  font-size: 11px;
+}
+
+.study-save-message.success {
+  color: #059669;
+}
+
+.study-save-message.error {
+  color: #dc2626;
+}
