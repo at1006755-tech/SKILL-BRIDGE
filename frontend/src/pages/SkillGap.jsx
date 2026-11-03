@@ -199,6 +199,22 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
     completedSet.has(normalizeSkill(req.name))
   );
 
+  // Show every skill selected in Profile, even when it is not part of
+  // the currently selected career's standard requirements.
+  const completedDisplaySkills = [...new Map(
+    [...completedSkills, ...programmingLanguages].map((name) => {
+      const requirement = requiredList.find(
+        (req) => normalizeSkill(req.name) === normalizeSkill(name)
+      );
+      return [normalizeSkill(name), {
+        name,
+        desc: requirement?.desc || "Selected in your Profile.",
+        isCareerRequirement: Boolean(requirement),
+        requirementName: requirement?.name
+      }];
+    })
+  ).values()];
+
   const inProgressForCareer = requiredList.filter((req) =>
     !completedSet.has(normalizeSkill(req.name)) &&
     inProgressSet.has(normalizeSkill(req.name))
@@ -412,33 +428,35 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
               <div className="category-title" style={{ color: "#15803d" }}>
                 <span>✓</span> Completed Skills
               </div>
-              <span className="category-count completed">{completedForCareer.length}</span>
+              <span className="category-count completed">{completedDisplaySkills.length}</span>
             </div>
 
-            {completedForCareer.map((skill) => (
+            {completedDisplaySkills.map((skill) => (
               <div key={skill.name} className="skill-item-card">
                 <div className="skill-item-name">{skill.name}</div>
                 <div className="skill-item-desc">{skill.desc}</div>
-                <div className="skill-actions">
-                  <button
-                    className="skill-action-btn"
-                    onClick={() => handleMarkInProgress(skill.name)}
-                    title="Move back to learning"
-                  >
-                    Move to In Progress
-                  </button>
-                  <button
-                    className="skill-action-btn"
-                    onClick={() => handleMarkMissing(skill.name)}
-                    title="Remove from completed"
-                  >
-                    Unmark
-                  </button>
-                </div>
+                {skill.isCareerRequirement && (
+                  <div className="skill-actions">
+                    <button
+                      className="skill-action-btn"
+                      onClick={() => handleMarkInProgress(skill.requirementName)}
+                      title="Move back to learning"
+                    >
+                      Move to In Progress
+                    </button>
+                    <button
+                      className="skill-action-btn"
+                      onClick={() => handleMarkMissing(skill.requirementName)}
+                      title="Remove from completed"
+                    >
+                      Unmark
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
 
-            {completedForCareer.length === 0 && (
+            {completedDisplaySkills.length === 0 && (
               <div className="column-empty">
                 <p>No skills marked as completed yet for this role.</p>
                 <small>Select from Missing skills once mastered.</small>
