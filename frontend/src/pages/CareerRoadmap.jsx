@@ -508,6 +508,7 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
   const [selectedCareer, setSelectedCareer] = useState(propCareer || "Software Developer");
   const [completedTaskIds, setCompletedTaskIds] = useState([]);
   const [completedByCareer, setCompletedByCareer] = useState({});
+  const [progressByCareer, setProgressByCareer] = useState({});
   const [missingSkills, setMissingSkills] = useState(propMissingSkills || []);
   const [saveMessage, setSaveMessage] = useState("");
   const [expandedPhases, setExpandedPhases] = useState({});
@@ -539,6 +540,10 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
             savedByCareer[legacyCareer] = data.roadmapCompletedTasks;
           }
           setCompletedByCareer(savedByCareer);
+          const savedProgress = data.roadmapProgressByCareer && typeof data.roadmapProgressByCareer === "object"
+            ? data.roadmapProgressByCareer
+            : {};
+          setProgressByCareer(savedProgress);
           const activeCareer = propCareer || data.targetCareer || "Software Developer";
           setSelectedCareer(activeCareer);
           setCompletedTaskIds(Array.isArray(savedByCareer[activeCareer]) ? savedByCareer[activeCareer] : []);
@@ -599,14 +604,13 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
       try {
         setSaving(true);
         const nextProgress = totalTasksCount > 0 ? Math.round((allTasks.filter((task) => updated.includes(task.id)).length / totalTasksCount) * 100) : 0;
+        const nextProgressByCareer = { ...progressByCareer, [selectedCareer]: nextProgress };
+        setProgressByCareer(nextProgressByCareer);
         await setDoc(
           doc(db, "users", user.uid),
           {
             roadmapCompletedTasksByCareer: nextByCareer,
-            roadmapProgressByCareer: {
-              ...(completedByCareer.progressByCareer || {}),
-              [selectedCareer]: nextProgress,
-            },
+            roadmapProgressByCareer: nextProgressByCareer,
             roadmapCompletedTasks: updated,
             roadmapProgress: nextProgress,
             roadmapUpdatedAt: serverTimestamp(),
