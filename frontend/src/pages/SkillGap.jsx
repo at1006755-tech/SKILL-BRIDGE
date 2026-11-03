@@ -81,10 +81,39 @@ const CAREER_REQUIREMENTS = {
   ]
 };
 
+// Treat common naming variations as the same skill (e.g. JS = JavaScript).
+const normalizeSkill = (value = "") => {
+  const cleaned = String(value).toLowerCase().trim().replace(/\\s+/g, " ");
+  const aliases = {
+    "js": "javascript",
+    "javascript": "javascript",
+    "react.js": "react",
+    "reactjs": "react",
+    "node.js": "nodejs",
+    "node": "nodejs",
+    "nodejs": "nodejs",
+    "rest api": "restapis",
+    "rest apis": "restapis",
+    "data structures and algorithms": "dsa",
+    "problem-solving": "problemsolving",
+    "problem solving": "problemsolving",
+    "c plus plus": "cplusplus",
+    "cpp": "cplusplus",
+    "c++": "cplusplus",
+    "html5": "html",
+    "css3": "css",
+    "ml": "machinelearning",
+    "ai/ml": "aiml",
+    "ai ml": "aiml"
+  };
+  return aliases[cleaned] || cleaned.replace(/[^a-z0-9]/g, "");
+};
+
 function SkillGap({ onBack, onNavigateRoadmap }) {
   const [selectedCareer, setSelectedCareer] = useState("Software Developer");
   const [completedSkills, setCompletedSkills] = useState([]);
   const [inProgressSkills, setInProgressSkills] = useState([]);
+  const [programmingLanguages, setProgrammingLanguages] = useState([]);
   const [customSkill, setCustomSkill] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -116,6 +145,9 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
           }
           if (Array.isArray(data.inProgressSkills)) {
             setInProgressSkills(data.inProgressSkills);
+          }
+          if (Array.isArray(data.programmingLanguages)) {
+            setProgrammingLanguages(data.programmingLanguages);
           }
         }
       } catch (err) {
@@ -155,23 +187,27 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
   // Get active career required skills
   const requiredList = CAREER_REQUIREMENTS[selectedCareer] || CAREER_REQUIREMENTS["Software Developer"];
 
-  // Normalize comparisons
-  const completedLower = completedSkills.map((s) => s.toLowerCase());
-  const inProgressLower = inProgressSkills.map((s) => s.toLowerCase());
-
-  // Derive Missing Skills for this career
-  const missingSkills = requiredList.filter(
-    (req) => !completedLower.includes(req.name.toLowerCase()) && !inProgressLower.includes(req.name.toLowerCase())
+  // Profile technical skills and programming languages both count toward skill matching.
+  // Normalize names so common variations such as React.js / React and JS / JavaScript match.
+  const completedSet = new Set(
+    [...completedSkills, ...programmingLanguages].map(normalizeSkill)
   );
+  const inProgressSet = new Set(inProgressSkills.map(normalizeSkill));
 
-  // Derive Completed required skills for this career
+  // Derive each category using normalized skill names.
   const completedForCareer = requiredList.filter((req) =>
-    completedLower.includes(req.name.toLowerCase())
+    completedSet.has(normalizeSkill(req.name))
   );
 
-  // Derive In-Progress required skills for this career
   const inProgressForCareer = requiredList.filter((req) =>
-    inProgressLower.includes(req.name.toLowerCase())
+    !completedSet.has(normalizeSkill(req.name)) &&
+    inProgressSet.has(normalizeSkill(req.name))
+  );
+
+  const missingSkills = requiredList.filter(
+    (req) =>
+      !completedSet.has(normalizeSkill(req.name)) &&
+      !inProgressSet.has(normalizeSkill(req.name))
   );
 
   // Gap percentage: (Completed / Required) * 100
@@ -183,7 +219,7 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
   const handleMarkCompleted = (skillName) => {
     const newCompleted = Array.from(new Set([...completedSkills, skillName]));
     const newInProgress = inProgressSkills.filter(
-      (s) => s.toLowerCase() !== skillName.toLowerCase()
+      (s) => normalizeSkill(s) !== normalizeSkill(skillName)
     );
 
     setCompletedSkills(newCompleted);
@@ -196,7 +232,7 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
   const handleMarkInProgress = (skillName) => {
     const newInProgress = Array.from(new Set([...inProgressSkills, skillName]));
     const newCompleted = completedSkills.filter(
-      (s) => s.toLowerCase() !== skillName.toLowerCase()
+      (s) => normalizeSkill(s) !== normalizeSkill(skillName)
     );
 
     setInProgressSkills(newInProgress);
@@ -208,10 +244,10 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
   // Actions: Reset / Mark Missing
   const handleMarkMissing = (skillName) => {
     const newCompleted = completedSkills.filter(
-      (s) => s.toLowerCase() !== skillName.toLowerCase()
+      (s) => normalizeSkill(s) !== normalizeSkill(skillName)
     );
     const newInProgress = inProgressSkills.filter(
-      (s) => s.toLowerCase() !== skillName.toLowerCase()
+      (s) => normalizeSkill(s) !== normalizeSkill(skillName)
     );
 
     setCompletedSkills(newCompleted);
@@ -226,7 +262,7 @@ function SkillGap({ onBack, onNavigateRoadmap }) {
     const clean = customSkill.trim();
     if (!clean) return;
 
-    if (completedSkills.some((s) => s.toLowerCase() === clean.toLowerCase())) {
+    if ([...completedSkills, ...programmingLanguages].some((s) => normalizeSkill(s) === normalizeSkill(clean))) {
       showToast(`"${clean}" is already in your skills.`);
       return;
     }
