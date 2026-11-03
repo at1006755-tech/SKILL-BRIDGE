@@ -1,0 +1,185 @@
+.daily-planner-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #172033;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+.daily-planner-header {
+  padding: 28px 48px 30px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+}
+.daily-planner-back {
+  display: block;
+  margin-bottom: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #4f46e5;
+  font-weight: 700;
+  cursor: pointer;
+}
+.daily-planner-eyebrow, .daily-planner-label {
+  color: #6366f1;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.daily-planner-header h1 {
+  margin: 8px 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.daily-planner-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+.daily-planner-content {
+  width: min(100% - 40px, 1050px);
+  margin: 30px auto 60px;
+}
+.daily-planner-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 32px;
+  color: white;
+  background: linear-gradient(135deg, #1e1b4b, #4338ca);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(67, 56, 202, .14);
+}
+.daily-planner-summary h2 {
+  margin: 8px 0 5px;
+  font-size: 24px;
+}
+.daily-planner-summary p {
+  margin: 0;
+  color: #c7d2fe;
+  font-size: 13px;
+}
+.daily-planner-summary .daily-planner-label { color: #c7d2fe; }
+.daily-planner-progress-circle {
+  width: 112px;
+  height: 112px;
+  flex: 0 0 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: conic-gradient(#34d399 var(--progress), rgba(255,255,255,.2) 0);
+  position: relative;
+}
+.daily-planner-progress-circle::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #312e81;
+}
+.daily-planner-progress-circle strong, .daily-planner-progress-circle span {
+  z-index: 1;
+}
+.daily-planner-progress-circle strong { font-size: 25px; }
+.daily-planner-progress-circle span { font-size: 10px; color: #c7d2fe; }
+.daily-planner-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+.daily-planner-stats > div {
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+.daily-planner-stats span {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 12px;
+}
+.daily-planner-stats strong { font-size: 20px; }
+.daily-planner-list {
+  padding: 25px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+}
+.daily-planner-list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.daily-planner-list-heading h2 { margin: 0 0 5px; font-size: 18px; }
+.daily-planner-list-heading p { margin: 0; color: #64748b; font-size: 12px; }
+.daily-planner-list-heading > span {
+  color: #4f46e5;
+  font-size: 12px;
+  font-weight: 700;
+}
+.daily-planner-tasks { display: flex; flex-direction: column; gap: 10px; }
+.daily-planner-task {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  text-align: left;
+  color: #172033;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.daily-planner-task:hover { border-color: #a5b4fc; background: #fafaff; }
+.daily-planner-task.completed { border-color: #a7f3d0; background: #f0fdf4; }
+.daily-planner-task:disabled { cursor: wait; opacity: .8; }
+.daily-planner-task-check {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #cbd5e1;
+  border-radius: 7px;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+.daily-planner-task.completed .daily-planner-task-check { border-color: #059669; background: #059669; }
+.daily-planner-task-icon { font-size: 23px; }
+.daily-planner-task-copy { display: flex; flex: 1; flex-direction: column; gap: 4px; }
+.daily-planner-task-copy small { color: #6366f1; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; }
+.daily-planner-task-copy strong { font-size: 13px; }
+.daily-planner-task-copy > span { color: #64748b; font-size: 11px; line-height: 1.5; }
+.daily-planner-task-time {
+  flex: 0 0 auto;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+}
+.daily-planner-feedback { margin: 14px 0 0; color: #4f46e5; font-size: 12px; }
+.daily-planner-feedback.error { color: #dc2626; }
+.daily-planner-footnote { margin: 14px 2px; color: #64748b; font-size: 11px; line-height: 1.6; }
+@media (max-width: 650px) {
+  .daily-planner-header { padding: 22px 20px; }
+  .daily-planner-header h1 { font-size: 25px; }
+  .daily-planner-content { width: min(100% - 28px, 1050px); margin-top: 18px; }
+  .daily-planner-summary { padding: 22px; }
+  .daily-planner-summary h2 { font-size: 19px; }
+  .daily-planner-progress-circle { width: 88px; height: 88px; flex-basis: 88px; }
+  .daily-planner-progress-circle strong { font-size: 20px; }
+  .daily-planner-stats { grid-template-columns: 1fr; gap: 9px; }
+  .daily-planner-list { padding: 18px; }
+  .daily-planner-list-heading { align-items: flex-start; }
+  .daily-planner-task { gap: 9px; padding: 12px 10px; }
+  .daily-planner-task-icon { font-size: 19px; }
+  .daily-planner-task-time { font-size: 10px; }
+}
