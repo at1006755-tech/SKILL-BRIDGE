@@ -233,13 +233,283 @@ const ROADMAP_TEMPLATES = {
       ],
       resources: [{ name: "Full Stack Open", url: "https://fullstackopen.com/" }]
     }
+  ],
+  "Backend Developer": [
+    {
+      id: "bd-phase-1", number: "01", title: "Programming & Backend Fundamentals", duration: "3-4 Weeks",
+      relatedSkills: ["Python", "Java", "Node.js", "Programming Fundamentals"],
+      description: "Build a strong programming foundation and understand how server-side applications work.",
+      objectives: ["Practice variables, functions, OOP, error handling and modular code.", "Understand client-server architecture and HTTP request/response flow."],
+      tasks: [
+        { id: "bd-1-1", text: "Solve 25 beginner programming problems in Python, Java or JavaScript." },
+        { id: "bd-1-2", text: "Build a command-line contact or expense manager using file handling." },
+        { id: "bd-1-3", text: "Use Postman or browser tools to inspect basic HTTP requests and responses." }
+      ],
+      resources: [{ name: "Python Tutorial", url: "https://docs.python.org/3/tutorial/" }, { name: "MDN HTTP", url: "https://developer.mozilla.org/en-US/docs/Web/HTTP" }]
+    },
+    {
+      id: "bd-phase-2", number: "02", title: "Server Development & REST APIs", duration: "4-5 Weeks",
+      relatedSkills: ["Node.js", "Express", "FastAPI", "REST API"],
+      description: "Create server routes, handle requests, validate input and build reliable APIs.",
+      objectives: ["Understand routing, middleware, status codes and JSON.", "Create CRUD endpoints with validation and error handling."],
+      tasks: [
+        { id: "bd-2-1", text: "Build a REST API for a notes or task-management application." },
+        { id: "bd-2-2", text: "Add request validation, reusable error handling and API documentation." },
+        { id: "bd-2-3", text: "Test all API routes and edge cases using Postman." }
+      ],
+      resources: [{ name: "Express Guide", url: "https://expressjs.com/en/guide/routing.html" }, { name: "FastAPI Tutorial", url: "https://fastapi.tiangolo.com/tutorial/" }]
+    },
+    {
+      id: "bd-phase-3", number: "03", title: "Databases, Authentication & Security", duration: "4 Weeks",
+      relatedSkills: ["SQL", "MongoDB", "Firebase", "Authentication", "Database"],
+      description: "Store application data safely and protect routes with authentication and authorization.",
+      objectives: ["Learn SQL tables, relationships, joins and basic indexing.", "Understand password hashing, sessions/tokens and access control."],
+      tasks: [
+        { id: "bd-3-1", text: "Design a relational database for a student or inventory application." },
+        { id: "bd-3-2", text: "Connect your API to a database and implement CRUD operations." },
+        { id: "bd-3-3", text: "Add login, protected routes and user-specific data access." }
+      ],
+      resources: [{ name: "SQLBolt", url: "https://sqlbolt.com/" }, { name: "OWASP Top 10", url: "https://owasp.org/www-project-top-ten/" }]
+    },
+    {
+      id: "bd-phase-4", number: "04", title: "Deployment, Testing & Portfolio Project", duration: "4-5 Weeks",
+      relatedSkills: ["Git", "GitHub", "Docker", "Cloud", "Testing"],
+      description: "Prepare a backend project for real users with testing, documentation and deployment.",
+      objectives: ["Use Git branches and environment variables safely.", "Understand logging, basic testing and deployment."],
+      tasks: [
+        { id: "bd-4-1", text: "Write API tests for successful, invalid and unauthorized requests." },
+        { id: "bd-4-2", text: "Deploy your API and database-backed application to a hosting platform." },
+        { id: "bd-4-3", text: "Publish a README with setup steps, API examples and project screenshots." }
+      ],
+      resources: [{ name: "GitHub Skills", url: "https://skills.github.com/" }, { name: "Render Docs", url: "https://render.com/docs" }]
+    }
+  ],
+  "Data Analyst": [
+    {
+      id: "da-phase-1", number: "01", title: "Excel, Data Basics & Statistics", duration: "3-4 Weeks",
+      relatedSkills: ["Excel", "Statistics", "Data Analysis"],
+      description: "Learn how to organize, clean and understand datasets before drawing conclusions.",
+      objectives: ["Use spreadsheets, formulas, sorting, filtering and pivot tables.", "Understand mean, median, mode, percentages and basic distributions."],
+      tasks: [
+        { id: "da-1-1", text: "Clean a messy sales or student dataset in Excel or Google Sheets." },
+        { id: "da-1-2", text: "Create pivot tables and a chart-based summary report." },
+        { id: "da-1-3", text: "Calculate and explain mean, median, percentage change and outliers." }
+      ],
+      resources: [{ name: "Microsoft Excel Help", url: "https://support.microsoft.com/excel" }, { name: "Khan Academy Statistics", url: "https://www.khanacademy.org/math/statistics-probability" }]
+    },
+    {
+      id: "da-phase-2", number: "02", title: "SQL for Data Analysis", duration: "3-4 Weeks",
+      relatedSkills: ["SQL", "MySQL", "PostgreSQL", "Database"],
+      description: "Query structured data and answer business questions using SQL.",
+      objectives: ["Learn SELECT, WHERE, GROUP BY, HAVING and JOIN.", "Use subqueries and aggregate functions to summarize data."],
+      tasks: [
+        { id: "da-2-1", text: "Complete 30 beginner SQL practice questions." },
+        { id: "da-2-2", text: "Write queries to find top products, monthly sales and customer trends." },
+        { id: "da-2-3", text: "Create a small relational database and document its schema." }
+      ],
+      resources: [{ name: "SQLBolt", url: "https://sqlbolt.com/" }, { name: "Mode SQL Tutorial", url: "https://mode.com/sql-tutorial/" }]
+    },
+    {
+      id: "da-phase-3", number: "03", title: "Python, Pandas & Data Visualization", duration: "5-6 Weeks",
+      relatedSkills: ["Python", "Pandas", "NumPy", "Matplotlib", "Data Visualization"],
+      description: "Use Python to clean, explore and visualize datasets efficiently.",
+      objectives: ["Load, filter, group and transform data with Pandas.", "Create meaningful charts and explain patterns in data."],
+      tasks: [
+        { id: "da-3-1", text: "Analyze a public dataset using Pandas and NumPy." },
+        { id: "da-3-2", text: "Handle missing values, duplicates and inconsistent data." },
+        { id: "da-3-3", text: "Create at least five clear charts using Matplotlib or Power BI." }
+      ],
+      resources: [{ name: "Pandas Getting Started", url: "https://pandas.pydata.org/docs/getting_started/" }, { name: "Matplotlib Tutorials", url: "https://matplotlib.org/stable/tutorials/" }]
+    },
+    {
+      id: "da-phase-4", number: "04", title: "Dashboard, Insights & Portfolio", duration: "4 Weeks",
+      relatedSkills: ["Power BI", "Tableau", "Data Visualization", "Communication"],
+      description: "Turn analysis into a dashboard and communicate practical recommendations.",
+      objectives: ["Build interactive dashboards with clear KPIs.", "Present findings with evidence and concise explanations."],
+      tasks: [
+        { id: "da-4-1", text: "Build a Power BI or Tableau dashboard from a public dataset." },
+        { id: "da-4-2", text: "Write a one-page report with three data-backed insights." },
+        { id: "da-4-3", text: "Publish the project notebook, dashboard screenshots and README on GitHub." }
+      ],
+      resources: [{ name: "Microsoft Learn: Power BI", url: "https://learn.microsoft.com/power-bi/" }, { name: "Kaggle Datasets", url: "https://www.kaggle.com/datasets" }]
+    }
+  ],
+  "Data Scientist": [
+    {
+      id: "ds-phase-1", number: "01", title: "Python, Mathematics & Statistics", duration: "5-6 Weeks",
+      relatedSkills: ["Python", "Statistics", "NumPy", "Mathematics"],
+      description: "Develop the programming and mathematical foundation needed for data science.",
+      objectives: ["Write Python programs and work with NumPy arrays.", "Understand descriptive statistics, probability and basic linear algebra."],
+      tasks: [
+        { id: "ds-1-1", text: "Solve 25 Python problems involving lists, dictionaries, functions and files." },
+        { id: "ds-1-2", text: "Practice NumPy array operations and basic numerical calculations." },
+        { id: "ds-1-3", text: "Explain mean, variance, standard deviation and probability with examples." }
+      ],
+      resources: [{ name: "Python Tutorial", url: "https://docs.python.org/3/tutorial/" }, { name: "Khan Academy Statistics", url: "https://www.khanacademy.org/math/statistics-probability" }]
+    },
+    {
+      id: "ds-phase-2", number: "02", title: "Data Wrangling & Exploratory Analysis", duration: "4-5 Weeks",
+      relatedSkills: ["Pandas", "NumPy", "Data Analysis", "Matplotlib"],
+      description: "Prepare real-world datasets and discover patterns before modeling.",
+      objectives: ["Clean and transform datasets using Pandas.", "Use visualizations and exploratory data analysis to investigate questions."],
+      tasks: [
+        { id: "ds-2-1", text: "Choose a public dataset and document its columns and data quality issues." },
+        { id: "ds-2-2", text: "Perform cleaning, feature inspection and exploratory analysis in a notebook." },
+        { id: "ds-2-3", text: "Present five findings with supporting charts." }
+      ],
+      resources: [{ name: "Pandas Documentation", url: "https://pandas.pydata.org/docs/" }, { name: "Kaggle Learn", url: "https://www.kaggle.com/learn" }]
+    },
+    {
+      id: "ds-phase-3", number: "03", title: "Machine Learning Fundamentals", duration: "6-8 Weeks",
+      relatedSkills: ["Machine Learning", "Scikit-learn", "Statistics", "AI"],
+      description: "Understand supervised and unsupervised learning and evaluate models correctly.",
+      objectives: ["Learn regression, classification, clustering and train/test split.", "Evaluate models using suitable metrics and avoid data leakage."],
+      tasks: [
+        { id: "ds-3-1", text: "Train a linear regression model and explain its error metric." },
+        { id: "ds-3-2", text: "Build a classification model and compare precision, recall and F1-score." },
+        { id: "ds-3-3", text: "Try a clustering algorithm and visualize its groups." }
+      ],
+      resources: [{ name: "Scikit-learn Tutorials", url: "https://scikit-learn.org/stable/tutorial/" }, { name: "Google ML Crash Course", url: "https://developers.google.com/machine-learning/crash-course" }]
+    },
+    {
+      id: "ds-phase-4", number: "04", title: "End-to-End Data Science Project", duration: "4-6 Weeks",
+      relatedSkills: ["Machine Learning", "Git", "GitHub", "Deployment"],
+      description: "Complete a reproducible project from problem definition to model evaluation and presentation.",
+      objectives: ["Create a clear data and modeling workflow.", "Document limitations and communicate results responsibly."],
+      tasks: [
+        { id: "ds-4-1", text: "Define a real-world prediction or classification problem and select a dataset." },
+        { id: "ds-4-2", text: "Build a reproducible notebook with preprocessing, baseline and evaluated model." },
+        { id: "ds-4-3", text: "Publish the project on GitHub with results, limitations and instructions." }
+      ],
+      resources: [{ name: "Kaggle", url: "https://www.kaggle.com/" }, { name: "GitHub Skills", url: "https://skills.github.com/" }]
+    }
+  ],
+  "AI ML Engineer": [
+    {
+      id: "ai-phase-1", number: "01", title: "Python, Mathematics & Programming", duration: "5-6 Weeks",
+      relatedSkills: ["Python", "Programming Fundamentals", "Statistics", "NumPy"],
+      description: "Build the coding and mathematical base for implementing machine learning systems.",
+      objectives: ["Become comfortable with Python, functions, OOP and debugging.", "Understand vectors, matrices, probability and basic statistics."],
+      tasks: [
+        { id: "ai-1-1", text: "Complete 30 Python practice problems and one small CLI project." },
+        { id: "ai-1-2", text: "Practice NumPy arrays, matrix operations and vector calculations." },
+        { id: "ai-1-3", text: "Revise probability, distributions, derivatives and basic linear algebra." }
+      ],
+      resources: [{ name: "Python Tutorial", url: "https://docs.python.org/3/tutorial/" }, { name: "3Blue1Brown: Linear Algebra", url: "https://www.3blue1brown.com/topics/linear-algebra" }]
+    },
+    {
+      id: "ai-phase-2", number: "02", title: "Data Handling & Machine Learning", duration: "6-8 Weeks",
+      relatedSkills: ["Pandas", "NumPy", "Machine Learning", "Scikit-learn"],
+      description: "Prepare data, train baseline models and understand how to evaluate them.",
+      objectives: ["Use Pandas for cleaning and feature preparation.", "Train regression and classification models and evaluate performance."],
+      tasks: [
+        { id: "ai-2-1", text: "Clean and explore a real dataset using Pandas." },
+        { id: "ai-2-2", text: "Train and evaluate one regression and one classification model." },
+        { id: "ai-2-3", text: "Compare models and explain overfitting, underfitting and data leakage." }
+      ],
+      resources: [{ name: "Scikit-learn Getting Started", url: "https://scikit-learn.org/stable/getting_started.html" }, { name: "Kaggle Learn", url: "https://www.kaggle.com/learn" }]
+    },
+    {
+      id: "ai-phase-3", number: "03", title: "Deep Learning & Modern AI", duration: "6-8 Weeks",
+      relatedSkills: ["Deep Learning", "TensorFlow", "PyTorch", "NLP"],
+      description: "Explore neural networks and choose a beginner-friendly deep learning framework.",
+      objectives: ["Understand layers, activation functions, loss and optimization.", "Build a small image or text model and evaluate it."],
+      tasks: [
+        { id: "ai-3-1", text: "Train a simple neural network on a beginner dataset." },
+        { id: "ai-3-2", text: "Complete a basic image or text classification tutorial." },
+        { id: "ai-3-3", text: "Record model performance and examples where it makes mistakes." }
+      ],
+      resources: [{ name: "PyTorch Tutorials", url: "https://pytorch.org/tutorials/" }, { name: "TensorFlow Tutorials", url: "https://www.tensorflow.org/tutorials" }]
+    },
+    {
+      id: "ai-phase-4", number: "04", title: "AI Application & Deployment", duration: "4-6 Weeks",
+      relatedSkills: ["FastAPI", "REST API", "Git", "GitHub", "Deployment"],
+      description: "Package a model behind an API and create a usable, documented AI application.",
+      objectives: ["Load a trained model in an application endpoint.", "Understand input validation, responsible output and deployment basics."],
+      tasks: [
+        { id: "ai-4-1", text: "Build a small prediction API using FastAPI or Flask." },
+        { id: "ai-4-2", text: "Create a simple frontend or interface to use the model." },
+        { id: "ai-4-3", text: "Deploy the demo and publish its limitations and setup guide on GitHub." }
+      ],
+      resources: [{ name: "FastAPI Tutorial", url: "https://fastapi.tiangolo.com/tutorial/" }, { name: "Hugging Face Learn", url: "https://huggingface.co/learn" }]
+    }
+  ],
+  "Cybersecurity": [
+    {
+      id: "cy-phase-1", number: "01", title: "Computer, Network & Linux Fundamentals", duration: "4-5 Weeks",
+      relatedSkills: ["Networking", "Linux", "Operating Systems", "Computer Fundamentals"],
+      description: "Understand the systems and networks that security professionals work to protect.",
+      objectives: ["Learn IP addresses, DNS, HTTP/HTTPS, ports and basic network flow.", "Use Linux terminal commands, permissions and processes."],
+      tasks: [
+        { id: "cy-1-1", text: "Practice essential Linux commands and file permissions in a safe lab." },
+        { id: "cy-1-2", text: "Draw a simple network diagram and explain DNS, TCP and HTTP." },
+        { id: "cy-1-3", text: "Learn OS users, processes, updates and basic system hardening." }
+      ],
+      resources: [{ name: "Linux Journey", url: "https://linuxjourney.com/" }, { name: "Cisco Networking Basics", url: "https://www.netacad.com/" }]
+    },
+    {
+      id: "cy-phase-2", number: "02", title: "Security Fundamentals & Defensive Practices", duration: "4 Weeks",
+      relatedSkills: ["Cybersecurity", "Network Security", "Cryptography"],
+      description: "Learn core security principles, common threats and practical defensive habits.",
+      objectives: ["Understand confidentiality, integrity, availability and least privilege.", "Recognize phishing, malware, weak authentication and common web risks."],
+      tasks: [
+        { id: "cy-2-1", text: "Create a threat checklist for a sample student portal." },
+        { id: "cy-2-2", text: "Enable MFA and document safe password and account practices." },
+        { id: "cy-2-3", text: "Study the OWASP Top 10 and summarize five web application risks." }
+      ],
+      resources: [{ name: "OWASP Top 10", url: "https://owasp.org/www-project-top-ten/" }, { name: "CISA Secure Our World", url: "https://www.cisa.gov/secure-our-world" }]
+    },
+    {
+      id: "cy-phase-3", number: "03", title: "Practical Security Labs & Monitoring", duration: "5-6 Weeks",
+      relatedSkills: ["Wireshark", "Security Tools", "Python", "Networking"],
+      description: "Practice security analysis only in authorized learning environments and your own lab.",
+      objectives: ["Inspect sample network traffic and identify basic protocol patterns.", "Understand logs, alerts and safe vulnerability assessment."],
+      tasks: [
+        { id: "cy-3-1", text: "Complete beginner defensive labs on an authorized training platform." },
+        { id: "cy-3-2", text: "Use Wireshark to inspect a sample capture file and write observations." },
+        { id: "cy-3-3", text: "Write a Python script to parse a sample log file for repeated failed logins." }
+      ],
+      resources: [{ name: "TryHackMe Learning Paths", url: "https://tryhackme.com/paths" }, { name: "Wireshark User Guide", url: "https://www.wireshark.org/docs/" }]
+    },
+    {
+      id: "cy-phase-4", number: "04", title: "Security Portfolio & Responsible Reporting", duration: "3-4 Weeks",
+      relatedSkills: ["Documentation", "Git", "GitHub", "Risk Assessment"],
+      description: "Demonstrate security knowledge through safe lab reports and clear documentation.",
+      objectives: ["Write concise findings with impact and remediation steps.", "Understand responsible disclosure and legal authorization."],
+      tasks: [
+        { id: "cy-4-1", text: "Write a report for a deliberately vulnerable training lab, including remediation." },
+        { id: "cy-4-2", text: "Create a basic security checklist for a demo web application." },
+        { id: "cy-4-3", text: "Publish sanitized lab notes and learning reflections on GitHub." }
+      ],
+      resources: [{ name: "PortSwigger Web Security Academy", url: "https://portswigger.net/web-security" }, { name: "NIST Cybersecurity Framework", url: "https://www.nist.gov/cyberframework" }]
+    }
   ]
 };
+
+function normalizeSkill(value) {
+  return String(value || "").toLowerCase().trim().replace(/[._-]/g, " ").replace(/\s+/g, " ");
+}
+
+const SKILL_ALIASES = {
+  "js": "javascript", "javascript": "javascript", "react js": "react", "react.js": "react",
+  "node js": "node", "node.js": "node", "rest apis": "rest api", "apis": "rest api",
+  "dsa": "data structures", "html5": "html", "css3": "css", "ml": "machine learning",
+  "ai ml": "machine learning", "ai": "machine learning", "postgresql": "sql",
+  "mysql": "sql", "problem solving": "algorithms"
+};
+
+function canonicalSkill(value) {
+  const normalized = normalizeSkill(value);
+  return SKILL_ALIASES[normalized] || normalized;
+}
+
 
 function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMissingSkills }) {
   const [selectedCareer, setSelectedCareer] = useState(propCareer || "Software Developer");
   const [completedTaskIds, setCompletedTaskIds] = useState([]);
+  const [completedByCareer, setCompletedByCareer] = useState({});
   const [missingSkills, setMissingSkills] = useState(propMissingSkills || []);
+  const [saveMessage, setSaveMessage] = useState("");
   const [expandedPhases, setExpandedPhases] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -261,9 +531,17 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
           if (data.targetCareer && !propCareer) {
             setSelectedCareer(data.targetCareer);
           }
-          if (Array.isArray(data.roadmapCompletedTasks)) {
-            setCompletedTaskIds(data.roadmapCompletedTasks);
+          const savedByCareer = data.roadmapCompletedTasksByCareer && typeof data.roadmapCompletedTasksByCareer === "object"
+            ? data.roadmapCompletedTasksByCareer
+            : {};
+          const legacyCareer = data.targetCareer || propCareer || "Software Developer";
+          if (!Array.isArray(savedByCareer[legacyCareer]) && Array.isArray(data.roadmapCompletedTasks)) {
+            savedByCareer[legacyCareer] = data.roadmapCompletedTasks;
           }
+          setCompletedByCareer(savedByCareer);
+          const activeCareer = propCareer || data.targetCareer || "Software Developer";
+          setSelectedCareer(activeCareer);
+          setCompletedTaskIds(Array.isArray(savedByCareer[activeCareer]) ? savedByCareer[activeCareer] : []);
           if (data.resumeAnalysis?.missing_skills && !propMissingSkills) {
             setMissingSkills(data.resumeAnalysis.missing_skills);
           }
@@ -278,8 +556,15 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
     fetchRoadmapData();
   }, [propCareer, propMissingSkills]);
 
-  // Select roadmap template (fallback to Software Developer)
+  // Select the roadmap matching the profile career.
   const phases = ROADMAP_TEMPLATES[selectedCareer] || ROADMAP_TEMPLATES["Software Developer"];
+
+  const handleCareerChange = (career) => {
+    setSelectedCareer(career);
+    setCompletedTaskIds(Array.isArray(completedByCareer[career]) ? completedByCareer[career] : []);
+    setFilterMode("all");
+    setSaveMessage("");
+  };
 
   // Initialize expanded state for first 2 phases
   useEffect(() => {
@@ -303,24 +588,35 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
     const updated = isCompleted
       ? completedTaskIds.filter((id) => id !== taskId)
       : [...completedTaskIds, taskId];
+    const nextByCareer = { ...completedByCareer, [selectedCareer]: updated };
 
     setCompletedTaskIds(updated);
+    setCompletedByCareer(nextByCareer);
+    setSaveMessage("");
 
     const user = auth.currentUser;
     if (user) {
       try {
         setSaving(true);
+        const nextProgress = totalTasksCount > 0 ? Math.round((allTasks.filter((task) => updated.includes(task.id)).length / totalTasksCount) * 100) : 0;
         await setDoc(
           doc(db, "users", user.uid),
           {
+            roadmapCompletedTasksByCareer: nextByCareer,
+            roadmapProgressByCareer: {
+              ...(completedByCareer.progressByCareer || {}),
+              [selectedCareer]: nextProgress,
+            },
             roadmapCompletedTasks: updated,
-            roadmapProgress: Math.round((updated.length / totalTasksCount) * 100),
+            roadmapProgress: nextProgress,
             roadmapUpdatedAt: serverTimestamp(),
           },
           { merge: true }
         );
+        setSaveMessage("Progress saved successfully.");
       } catch (err) {
         console.error("Roadmap sync error:", err);
+        setSaveMessage("Could not save progress. Please try again.");
       } finally {
         setSaving(false);
       }
@@ -337,8 +633,13 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
   // Determine if phase addresses a missing skill
   const isPhaseMissingSkillFocus = (phase) => {
     if (!missingSkills?.length) return false;
-    const lowerMissing = missingSkills.map((s) => s.toLowerCase());
-    return phase.relatedSkills.some((s) => lowerMissing.includes(s.toLowerCase()));
+    const missingSet = new Set(missingSkills.map(canonicalSkill));
+    return phase.relatedSkills.some((skill) => {
+      const canonical = canonicalSkill(skill);
+      return missingSet.has(canonical) || [...missingSet].some((missing) =>
+        missing && canonical && (missing.includes(canonical) || canonical.includes(missing))
+      );
+    });
   };
 
   // Check if phase is fully completed
@@ -378,7 +679,7 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
             </label>
             <select
               value={selectedCareer}
-              onChange={(e) => setSelectedCareer(e.target.value)}
+              onChange={(e) => handleCareerChange(e.target.value)}
               style={{
                 padding: "8px 16px",
                 borderRadius: "10px",
@@ -392,6 +693,11 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
             >
               <option value="Software Developer">Software Developer</option>
               <option value="Web Developer">Web Developer</option>
+              <option value="Backend Developer">Backend Developer</option>
+              <option value="Data Analyst">Data Analyst</option>
+              <option value="Data Scientist">Data Scientist</option>
+              <option value="AI ML Engineer">AI ML Engineer</option>
+              <option value="Cybersecurity">Cybersecurity</option>
             </select>
           </div>
         </div>
@@ -410,7 +716,9 @@ function CareerRoadmap({ onBack, targetCareer: propCareer, missingSkills: propMi
               Completed <strong>{completedCount} of {totalTasksCount}</strong> practical milestone tasks.
               Phases highlighted with <strong>"Priority Focus"</strong> address the specific skill gaps discovered in your resume.
             </p>
-            {saving && <small style={{ color: "#a5b4fc" }}>Saving progress to cloud...</small>}
+            {loading && <small style={{ color: "#c7d2fe", display: "block" }}>Loading your saved roadmap...</small>}
+            {saving && <small style={{ color: "#a5b4fc", display: "block" }}>Saving progress to cloud...</small>}
+            {!saving && saveMessage && <small role="status" style={{ color: saveMessage.startsWith("Could not") ? "#fecaca" : "#bbf7d0", display: "block" }}>{saveMessage}</small>}
           </div>
 
           <div className="banner-progress-circle">
