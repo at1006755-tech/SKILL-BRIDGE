@@ -13,6 +13,7 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
   const [inProgressSkills, setInProgressSkills] = useState([]);
   const [resumeAnalysis, setResumeAnalysis] = useState(null);
   const [roadmapCompletedTasks, setRoadmapCompletedTasks] = useState([]);
+  const [savedRoadmapProgress, setSavedRoadmapProgress] = useState(null);
   const [studyStreak, setStudyStreak] = useState([true, true, true, false, false, false, false]); // Mon-Sun
   const [savingStreak, setSavingStreak] = useState(false);
 
@@ -34,7 +35,20 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
           setSkills(Array.isArray(data.skills) ? data.skills : []);
           setInProgressSkills(Array.isArray(data.inProgressSkills) ? data.inProgressSkills : []);
           setResumeAnalysis(data.resumeAnalysis || null);
-          setRoadmapCompletedTasks(Array.isArray(data.roadmapCompletedTasks) ? data.roadmapCompletedTasks : []);
+          const completedByCareer = data.roadmapCompletedTasksByCareer && typeof data.roadmapCompletedTasksByCareer === "object"
+            ? data.roadmapCompletedTasksByCareer
+            : {};
+          const careerTasks = Array.isArray(completedByCareer[data.targetCareer || "Software Developer"])
+            ? completedByCareer[data.targetCareer || "Software Developer"]
+            : (Array.isArray(data.roadmapCompletedTasks) ? data.roadmapCompletedTasks : []);
+          setRoadmapCompletedTasks(careerTasks);
+
+          const progressByCareer = data.roadmapProgressByCareer && typeof data.roadmapProgressByCareer === "object"
+            ? data.roadmapProgressByCareer
+            : {};
+          const careerProgress = progressByCareer[data.targetCareer || "Software Developer"];
+          setSavedRoadmapProgress(typeof careerProgress === "number" ? careerProgress : null);
+
           if (Array.isArray(data.weeklyStudyDays)) {
             setStudyStreak(data.weeklyStudyDays);
           }
@@ -58,10 +72,22 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
 
   // Roadmap Progress
   const totalRoadmapMilestones = 20; // benchmark tasks
-  const roadmapProgress = Math.min(
-    100,
-    Math.round((roadmapCompletedTasks.length / totalRoadmapMilestones) * 100)
+  const roadmapProgress = savedRoadmapProgress !== null
+    ? Math.min(100, Math.max(0, savedRoadmapProgress))
+    : Math.min(100, Math.round((roadmapCompletedTasks.length / totalRoadmapMilestones) * 100));
+
+  const normalizedSkill = (value = "") => String(value).toLowerCase().trim().replace(/[^a-z0-9]/g, "");
+  const completedSkillKeys = new Set(skills.map(normalizedSkill));
+  const inProgressUnique = inProgressSkills.filter((skill) => !completedSkillKeys.has(normalizedSkill(skill)));
+  const inProgressKeys = new Set(inProgressUnique.map(normalizedSkill));
+  const missingUnique = (resumeAnalysis?.missing_skills || []).filter(
+    (skill) => !completedSkillKeys.has(normalizedSkill(skill)) && !inProgressKeys.has(normalizedSkill(skill))
   );
+  const skillBreakdownTotal = skills.length + inProgressUnique.length + missingUnique.length;
+  const skillBreakdownPercent = (count) => skillBreakdownTotal
+    ? Math.round((count / skillBreakdownTotal) * 100)
+    : 0;
+  const weeklyActivityPercent = Math.round((activeDaysCountSafe(studyStreak) / 7) * 100);
 
   // Toggle study day
   const handleToggleDay = async (index) => {
@@ -220,6 +246,29 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
           </div>
         </div>
 
+        {/* Skill Status Breakdown */}
+        <section className="analytics-card skill-breakdown-card">
+          <h3>Skill Status Breakdown</h3>
+          <p>Snapshot of skills identified from your profile and latest resume analysis.</p>
+
+          {skillBreakdownTotal > 0 ? (
+            <>
+              <div className="skill-stack-track" role="img" aria-label={`${skills.length} completed, ${inProgressUnique.length} in progress, ${missingUnique.length} identified gaps`}>
+                {skills.length > 0 && <div className="skill-stack-completed" style={{ width: `${skillBreakdownPercent(skills.length)}%` }} />}
+                {inProgressUnique.length > 0 && <div className="skill-stack-progress" style={{ width: `${skillBreakdownPercent(inProgressUnique.length)}%` }} />}
+                {missingUnique.length > 0 && <div className="skill-stack-gap" style={{ width: `${skillBreakdownPercent(missingUnique.length)}%` }} />}
+              </div>
+              <div className="skill-breakdown-legend">
+                <span><i className="legend-dot completed" /> Completed <strong>{skills.length}</strong></span>
+                <span><i className="legend-dot in-progress" /> In Progress <strong>{inProgressUnique.length}</strong></span>
+                <span><i className="legend-dot gap" /> Resume Gaps <strong>{missingUnique.length}</strong></span>
+              </div>
+            </>
+          ) : (
+            <p className="skill-breakdown-empty">Add skills to your profile or analyze your resume to see your skill breakdown.</p>
+          )}
+        </section>
+
         {/* Analytics 2-Column Grid */}
         <div className="analytics-grid">
           {/* Column 1: Skill Distribution & Roadmap Progress */}
@@ -312,6 +361,11 @@ function ProgressTracking({ onBack, onNavigateRoadmap, onNavigateResume, onNavig
             <p>Click any day to log your preparation activity streak ({activeDaysCount}/7 active days):</p>
 
             {/* 7 Days of the Week */}
+            <div className="weekly-activity-summary">
+              <div><strong>{activeDaysCount}/7</strong><span>study days logged</span></div>
+              <div className="weekly-activity-track"><div style={{ width: `${weeklyActivityPercent}%` }} /></div>
+              <small>{weeklyActivityPercent}% of your weekly goal</small>
+            </div>
             <div className="weekly-days-grid">
               {DAYS_OF_WEEK.map((day, idx) => (
                 <div
