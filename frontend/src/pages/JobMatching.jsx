@@ -122,7 +122,6 @@ const DEMO_JOBS = [
 function JobMatching({ onBack, onNavigateRoadmap }) {
   const [studentSkills, setStudentSkills] = useState([]);
   const [studentLanguages, setStudentLanguages] = useState([]);
-  const [studentInProgressSkills, setStudentInProgressSkills] = useState([]);
   const [studentCareer, setStudentCareer] = useState("Software Developer");
   const [loading, setLoading] = useState(true);
 
@@ -151,9 +150,6 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
           }
           if (Array.isArray(data.programmingLanguages)) {
             setStudentLanguages(data.programmingLanguages);
-          }
-          if (Array.isArray(data.inProgressSkills)) {
-            setStudentInProgressSkills(data.inProgressSkills);
           }
           if (data.targetCareer) {
             setStudentCareer(data.targetCareer);
@@ -198,7 +194,6 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
   const allStudentSkills = [
     ...studentSkills,
     ...studentLanguages,
-    ...studentInProgressSkills,
   ];
   const studentSkillSet = new Set(allStudentSkills.map(normalizeSkill).filter(Boolean));
 
