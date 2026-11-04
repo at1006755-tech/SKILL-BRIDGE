@@ -121,6 +121,8 @@ const DEMO_JOBS = [
 
 function JobMatching({ onBack, onNavigateRoadmap }) {
   const [studentSkills, setStudentSkills] = useState([]);
+  const [studentLanguages, setStudentLanguages] = useState([]);
+  const [studentInProgressSkills, setStudentInProgressSkills] = useState([]);
   const [studentCareer, setStudentCareer] = useState("Software Developer");
   const [loading, setLoading] = useState(true);
 
@@ -147,6 +149,12 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
           if (Array.isArray(data.skills)) {
             setStudentSkills(data.skills);
           }
+          if (Array.isArray(data.programmingLanguages)) {
+            setStudentLanguages(data.programmingLanguages);
+          }
+          if (Array.isArray(data.inProgressSkills)) {
+            setStudentInProgressSkills(data.inProgressSkills);
+          }
           if (data.targetCareer) {
             setStudentCareer(data.targetCareer);
           }
@@ -161,26 +169,60 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
     fetchStudentProfile();
   }, []);
 
-  // Compute Match Details for each Job
-  const studentSkillsLower = studentSkills.map((s) => s.toLowerCase());
+  // Normalize common skill aliases so equivalent names match correctly.
+  const normalizeSkill = (skill) => {
+    const value = String(skill || "").trim().toLowerCase().replace(/[._-]/g, " ").replace(/\\s+/g, " ");
+    const aliases = {
+      js: "javascript",
+      "javascript": "javascript",
+      "react js": "react",
+      "react.js": "react",
+      "node js": "node.js",
+      "nodejs": "node.js",
+      "html5": "html",
+      "css3": "css",
+      "rest api": "rest apis",
+      "rest apis": "rest apis",
+      "machine learning": "machine learning",
+      "ml": "machine learning",
+      "ai": "ai",
+      "dsa": "dsa",
+      "data structures and algorithms": "dsa",
+      "git hub": "github",
+      "problem-solving": "problem solving",
+    };
+    return aliases[value] || value;
+  };
 
+  // Combine skills, languages and in-progress skills from the saved profile.
+  const allStudentSkills = [
+    ...studentSkills,
+    ...studentLanguages,
+    ...studentInProgressSkills,
+  ];
+  const studentSkillSet = new Set(allStudentSkills.map(normalizeSkill).filter(Boolean));
+
+  // Compute match details using normalized profile skills.
   const jobsWithMatch = DEMO_JOBS.map((job) => {
     const matchingSkills = job.requiredSkills.filter((reqSkill) =>
-      studentSkillsLower.includes(reqSkill.toLowerCase())
+      studentSkillSet.has(normalizeSkill(reqSkill))
     );
     const missingSkills = job.requiredSkills.filter(
-      (reqSkill) => !studentSkillsLower.includes(reqSkill.toLowerCase())
+      (reqSkill) => !studentSkillSet.has(normalizeSkill(reqSkill))
     );
 
     const matchPercentage = job.requiredSkills.length > 0
       ? Math.round((matchingSkills.length / job.requiredSkills.length) * 100)
       : 0;
+    const isCareerRecommended =
+      normalizeSkill(job.role) === normalizeSkill(studentCareer);
 
     return {
       ...job,
       matchingSkills,
       missingSkills,
       matchPercentage,
+      isCareerRecommended,
     };
   });
 
@@ -222,7 +264,7 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
           <div style={{ textAlign: "right" }}>
             <span style={{ fontSize: "12px", color: "#64748b" }}>Your Verified Skills:</span>
             <div style={{ fontSize: "15px", fontWeight: "700", color: "#4f46e5" }}>
-              {studentSkills.length} Skills in Profile
+              {new Set(allStudentSkills.map(normalizeSkill).filter(Boolean)).size} Skills in Profile
             </div>
           </div>
         </div>
@@ -318,6 +360,9 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
                   </div>
 
                   {/* Meta Pills */}
+                  {job.isCareerRecommended && (
+                    <div className="career-recommendation-label">★ Recommended for your career goal: {studentCareer}</div>
+                  )}
                   <div className="job-meta-pills">
                     <span className="job-meta-pill">📍 {job.location}</span>
                     <span className="job-meta-pill">💼 {job.type}</span>
