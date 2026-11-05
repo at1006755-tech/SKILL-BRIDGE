@@ -131,6 +131,7 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
   const [typeFilter, setTypeFilter] = useState("all");
   const [modeFilter, setModeFilter] = useState("all");
   const [minMatch, setMinMatch] = useState(0);
+  const [expandedLearningJob, setExpandedLearningJob] = useState(null);
 
   // Load student profile skills from Firestore
   useEffect(() => {
@@ -271,8 +272,8 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
         <div className="demo-banner">
           <span>ℹ️</span>
           <div>
-            <strong>Demonstration Dataset:</strong> Real tech company campus openings & verified role specifications.
-            Match percentages are computed dynamically using your confirmed profile skills.
+            <strong>Sample Opportunities — Illustrative Data:</strong> These example roles demonstrate skill matching; they are not confirmed live vacancies.
+            Match percentages are calculated from the skills saved in your profile. Check each company official careers portal for current openings, eligibility and compensation.
           </div>
         </div>
 
@@ -384,6 +385,27 @@ function JobMatching({ onBack, onNavigateRoadmap }) {
                     </div>
                   </div>
                 </div>
+
+                                  {job.missingSkills.length > 0 && (
+                    <section className="job-learning-section">
+                      <button type="button" className="learning-toggle" aria-expanded={expandedLearningJob === job.id}
+                        onClick={() => setExpandedLearningJob(expandedLearningJob === job.id ? null : job.id)}>
+                        {expandedLearningJob === job.id ? "Hide" : "View"} your learning path
+                        <span>{job.missingSkills.length} skills to build</span>
+                      </button>
+                      {expandedLearningJob === job.id && (
+                        <div className="learning-path-list">
+                          <p className="learning-intro">Practise these missing skills to improve your match for {job.title}:</p>
+                          {job.missingSkills.map((skill, index) => (
+                            <div className="learning-path-item" key={skill}>
+                              <span className="learning-step-number">{index + 1}</span>
+                              <div><strong>{skill}</strong><p>Learn the fundamentals, complete a small hands-on exercise, and use this skill in a project.</p></div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </section>
+                  )}
 
                 {/* Footer with Salary & Apply */}
                 <div className="job-footer">
