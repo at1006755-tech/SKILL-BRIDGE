@@ -451,3 +451,35 @@
   .structured-recs-grid { grid-template-columns: 1fr; }
   .structured-rec-top { flex-wrap: wrap; }
 }
+
+
+/* Gemini-powered personalized resume review */
+.gemini-review-section { border-color: #c7d2fe; }
+.gemini-review-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap; margin-bottom:18px; }
+.gemini-review-heading h3 { margin-bottom:5px; }
+.gemini-review-heading p { margin:0; color:#64748b; font-size:13px; }
+.gemini-status { padding:6px 10px; border-radius:999px; background:#f1f5f9; color:#64748b; font-size:11px; font-weight:800; }
+.gemini-status.connected { background:#dcfce7; color:#166534; }
+.gemini-assessment { padding:17px; background:#eef2ff; border:1px solid #c7d2fe; border-radius:13px; margin-bottom:20px; }
+.gemini-assessment h4,.gemini-review-block h4 { margin:0 0 10px; color:#1e293b; font-size:15px; }
+.gemini-assessment p { margin:0; color:#334155; font-size:13px; line-height:1.7; }
+.gemini-review-block { margin-top:22px; }
+.gemini-review-block ul,.gemini-review-block ol { padding-left:20px; margin:8px 0 0; color:#475569; font-size:13px; line-height:1.75; }
+.gemini-gap-grid,.gemini-plan-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+.gemini-gap-card,.gemini-improvement-card,.gemini-plan-card { padding:16px; border:1px solid #e2e8f0; border-radius:12px; background:#fff; }
+.gemini-gap-title { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.gemini-gap-title strong,.gemini-improvement-card > strong { color:#1e293b; font-size:14px; }
+.gemini-gap-card > p,.gemini-improvement-card p { color:#475569; font-size:12px; line-height:1.65; margin:10px 0 0; }
+.gemini-gap-detail { background:#f8fafc; border-radius:9px; padding:11px; margin-top:11px; }
+.gemini-gap-detail > strong { color:#4338ca; font-size:11px; }
+.gemini-gap-detail p { color:#475569; font-size:12px; line-height:1.65; margin:5px 0 0; }
+.gemini-gap-detail ol { margin-top:5px; }
+.gemini-improvement-list { display:grid; grid-template-columns:1fr; gap:11px; }
+.gemini-plan-card > span { display:block; color:#4f46e5; font-size:11px; font-weight:800; margin-bottom:7px; }
+.gemini-plan-card > strong { color:#1e293b; font-size:13px; }
+.gemini-plan-card ul { margin-top:7px; }
+.gemini-important-note { margin:20px 0 0; padding:13px 15px; background:#fffbeb; border:1px solid #fde68a; border-radius:10px; color:#92400e; font-size:12px; line-height:1.6; }
+.gemini-unavailable { padding:15px; background:#fff7ed; border:1px solid #fed7aa; border-radius:11px; color:#9a3412; }
+.gemini-unavailable p { margin:0 0 6px; font-size:13px; }
+.gemini-unavailable small { font-size:11px; }
+@media(max-width:700px) { .gemini-gap-grid,.gemini-plan-grid { grid-template-columns:1fr; } }
