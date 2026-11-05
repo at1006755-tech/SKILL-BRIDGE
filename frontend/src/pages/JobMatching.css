@@ -266,3 +266,78 @@
     padding: 0 16px 40px;
   }
 }
+
+/* Personalized skill-gap learning path */
+.job-learning-section {
+  margin: -2px 0 20px;
+  border: 1px solid #c7d2fe;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8faff;
+}
+
+.learning-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 0;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+
+.learning-toggle span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.learning-path-list {
+  padding: 12px 14px 14px;
+}
+
+.learning-intro {
+  margin: 0 0 12px;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.learning-path-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.learning-step-number {
+  display: grid;
+  place-items: center;
+  flex: 0 0 23px;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: #4338ca;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.learning-path-item strong {
+  color: #1e293b;
+  font-size: 12px;
+}
+
+.learning-path-item p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
