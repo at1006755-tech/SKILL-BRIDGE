@@ -106,6 +106,8 @@ function ResumeAnalyzer({ onBack }) {
                 missing_skills: data.missing_skills || [],
                 recommendations: data.recommendations || [],
                 structured_recommendations: data.structured_recommendations || [],
+                ai_review: data.ai_review || null,
+                ai_review_status: data.ai_review_status || null,
                 score_breakdown: data.score_breakdown || null,
                 analyzedAt: serverTimestamp(),
               },
@@ -471,6 +473,105 @@ function ResumeAnalyzer({ onBack }) {
                       <p>{rec}</p>
                     </div>
                   ))}
+                </div>
+              )}
+            </section>
+
+            {/* Gemini Personalized Resume Review */}
+            <section className="analysis-card-full gemini-review-section">
+              <div className="gemini-review-heading">
+                <div>
+                  <h3>✨ Personalized AI Resume Review</h3>
+                  <p>Gemini reviews your actual resume content for your selected career goal.</p>
+                </div>
+                <span className={result.ai_review ? "gemini-status connected" : "gemini-status"}>
+                  {result.ai_review ? "Gemini AI Review" : "AI review unavailable"}
+                </span>
+              </div>
+
+              {result.ai_review ? (
+                <>
+                  <div className="gemini-assessment">
+                    <h4>Recruiter-style assessment</h4>
+                    <p>{result.ai_review.overall_assessment}</p>
+                  </div>
+
+                  {result.ai_review.strengths?.length > 0 && (
+                    <div className="gemini-review-block">
+                      <h4>What is already strong</h4>
+                      <ul>{result.ai_review.strengths.map((item, index) => <li key={index}>{item}</li>)}</ul>
+                    </div>
+                  )}
+
+                  {result.ai_review.skill_gap_analysis?.length > 0 && (
+                    <div className="gemini-review-block">
+                      <h4>Skills to learn for {result.target_career || targetCareer}</h4>
+                      <div className="gemini-gap-grid">
+                        {result.ai_review.skill_gap_analysis.map((gap, index) => (
+                          <article className="gemini-gap-card" key={index}>
+                            <div className="gemini-gap-title">
+                              <strong>{gap.skill}</strong>
+                              <span className={`priority-pill priority-${(gap.priority || "medium").toLowerCase()}`}>{gap.priority || "Suggested"}</span>
+                            </div>
+                            <p><strong>Why it matters:</strong> {gap.why_needed}</p>
+                            {gap.learning_path?.length > 0 && (
+                              <div className="gemini-gap-detail">
+                                <strong>How to learn it</strong>
+                                <ol>{gap.learning_path.map((step, stepIndex) => <li key={stepIndex}>{step}</li>)}</ol>
+                              </div>
+                            )}
+                            {gap.proof_project && <div className="gemini-gap-detail"><strong>Build to prove this skill</strong><p>{gap.proof_project}</p></div>}
+                            {gap.resume_bullet_example && <div className="gemini-gap-detail"><strong>Resume bullet template — use only after completing the work</strong><p>{gap.resume_bullet_example}</p></div>}
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {result.ai_review.resume_improvements?.length > 0 && (
+                    <div className="gemini-review-block">
+                      <h4>What to improve in your resume</h4>
+                      <div className="gemini-improvement-list">
+                        {result.ai_review.resume_improvements.map((item, index) => (
+                          <article className="gemini-improvement-card" key={index}>
+                            <strong>{item.section}</strong>
+                            <p><b>Observation:</b> {item.issue}</p>
+                            <p><b>Recommendation:</b> {item.recommendation}</p>
+                            {item.sample_rewrite && <p><b>Example:</b> {item.sample_rewrite}</p>}
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {result.ai_review.action_plan?.length > 0 && (
+                    <div className="gemini-review-block">
+                      <h4>Your step-by-step improvement plan</h4>
+                      <div className="gemini-plan-grid">
+                        {result.ai_review.action_plan.map((phase, index) => (
+                          <article className="gemini-plan-card" key={index}>
+                            <span>{phase.timeframe}</span>
+                            <strong>{phase.goal}</strong>
+                            <ul>{(phase.tasks || []).map((task, taskIndex) => <li key={taskIndex}>{task}</li>)}</ul>
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {result.ai_review.ats_feedback?.length > 0 && (
+                    <div className="gemini-review-block">
+                      <h4>ATS & readability feedback</h4>
+                      <ul>{result.ai_review.ats_feedback.map((item, index) => <li key={index}>{item}</li>)}</ul>
+                    </div>
+                  )}
+
+                  <p className="gemini-important-note">{result.ai_review.important_note || "Add a skill or project to your resume only after you have genuinely learned or completed it."}</p>
+                </>
+              ) : (
+                <div className="gemini-unavailable">
+                  <p>{result.ai_review_status?.message || "Gemini could not review this resume. The existing skill analysis and recommendations are still available."}</p>
+                  <small>Configure your Gemini API key in the backend environment, restart the backend, and analyze the PDF again.</small>
                 </div>
               )}
             </section>
